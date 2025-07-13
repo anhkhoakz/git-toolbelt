@@ -19,9 +19,14 @@ while getopts qh flag; do
                 usage
                 exit 2
                 ;;
+        *)
+                echo "Unknown option: -$flag" >&2
+                usage
+                exit 1
+                ;;
         esac
 done
-shift $(($OPTIND - 1))
+shift $((OPTIND - 1))
 
 list_skipped() {
         git ls-files -v | grep "^S" | cut -c3-
@@ -31,5 +36,5 @@ if [ $quiet -eq 0 ]; then
         list_skipped
 else
         num_changed=$(list_skipped | wc -l)
-        test $num_changed -eq 0
+        test "$num_changed" -eq 0
 fi

@@ -26,7 +26,7 @@ while getopts fh flag; do
                 ;;
         esac
 done
-shift $(($OPTIND - 1))
+shift $((OPTIND - 1))
 
 curr=$(git current-branch)
 remote=${1-origin}

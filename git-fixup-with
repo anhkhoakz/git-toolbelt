@@ -29,7 +29,7 @@ while getopts rh flag; do
                 ;;
         esac
 done
-shift $(($OPTIND - 1))
+shift $((OPTIND - 1))
 
 # Make sure the index is dirty, otherwise there isn\'t anything to fixup
 git is-dirty -i

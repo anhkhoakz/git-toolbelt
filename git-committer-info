@@ -22,9 +22,14 @@ while getopts aAh flag; do
                 usage
                 exit 2
                 ;;
+        *)
+                echo "Unknown option: -$flag" >&2
+                usage
+                exit 1
+                ;;
         esac
 done
-shift $(($OPTIND - 1))
+shift $((OPTIND - 1))
 
 if [ $all_committers -eq 1 ]; then
         committers=$(git shortlog -s | cut -f2-)
@@ -55,11 +60,11 @@ count_by_dow() {
     function round(x, ival, aval, fraction)
     {
         ival = int(x)    # integer part, int() truncates
-     
+
         # see if fractional part
         if (ival == x)   # no fraction
            return ival   # ensure no decimals
-     
+
         if (x < 0) {
            aval = -x     # absolute value
            ival = int(aval)
@@ -76,7 +81,7 @@ count_by_dow() {
               return ival
         }
     }
-     
+
     END {
         total = map["Mon"] + map["Tue"] + map["Wed"] + map["Thu"] + map["Fri"] + map["Sat"] + map["Sun"]
         printf("%s %6s %4s%%\n", "Mon", map["Mon"], round(map["Mon"] / total * 100))
@@ -102,7 +107,7 @@ if [ $all_branches -eq 1 ]; then
 fi
 
 first=1
-echo "$committers" | while read committer; do
+echo "$committers" | while read -r committer; do
         if [ $first -ne 1 ]; then
                 echo ""
         else

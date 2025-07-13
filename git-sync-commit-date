@@ -24,9 +24,14 @@ while getopts fqh flag; do
                 usage
                 exit 2
                 ;;
+        *)
+                echo "Unknown option: -$flag" >&2
+                usage
+                exit 1
+                ;;
         esac
 done
-shift $(($OPTIND - 1))
+shift $((OPTIND - 1))
 
 # Enforce we're in a clean work tree
 git is-clean -iv
@@ -43,7 +48,7 @@ fi
 
 if [ $force = 0 ]; then
         echo "Reset last commit date to $author_date? [yN] " >&2
-        read answer
+        read -r answer
         if [ "$answer" != "y" ]; then
                 exit 1
         fi
