@@ -54,7 +54,7 @@ main() {
         BASE_SHA="$(git sha HEAD)"
 
         for expr in "$@"; do
-                locally_changed_files | grep -Ee "$expr" | while read f; do
+                locally_changed_files | grep -Ee "$expr" | while read -r f; do
                         git add "$f"
                 done
 
@@ -78,7 +78,7 @@ main() {
                 fi
         fi
 
-        locally_changed_files | while read f; do
+        locally_changed_files | while read -r f; do
                 git add "$f"
         done
 

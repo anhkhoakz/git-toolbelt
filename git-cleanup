@@ -38,9 +38,13 @@ while getopts nlrsvh flag; do
                 usage
                 exit 2
                 ;;
+        *)
+                usage
+                exit 1
+                ;;
         esac
 done
-shift $(($OPTIND - 1))
+shift $((OPTIND - 1))
 
 if [ $remotes -eq 0 ] && [ $locals -eq 0 ]; then
         usage
@@ -85,11 +89,11 @@ find_branch_base() {
         base_point=""
 
         if git local-branch-exists "$branch"; then
-                base_point=$(find_common_base "$branch" $base_point)
+                base_point=$(find_common_base "$branch" "$base_point")
         fi
 
         if git remote-branch-exists origin "$branch"; then
-                base_point=$(find_common_base "origin/$branch" $base_point)
+                base_point=$(find_common_base "origin/$branch" "$base_point")
         fi
 
         if [ -n "$base_point" ]; then
@@ -188,7 +192,7 @@ if [ $remotes -eq 1 ]; then
                 done
 
                 if [ -n "$branches_to_remove" ]; then
-                        if ! safegit push "$remote" --delete $branches_to_remove; then
+                        if ! safegit push "$remote" --delete "$branches_to_remove"; then
                                 echo "Errors deleting branches $branches_to_remove from remote '$remote'" >&2
                         fi
                 fi
@@ -210,6 +214,6 @@ if [ $locals -eq 1 ]; then
         done
 
         if [ -n "$branches_to_remove" ]; then
-                safegit branch -dr $branches_to_remove
+                safegit branch -dr "$branches_to_remove"
         fi
 fi

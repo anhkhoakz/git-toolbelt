@@ -35,6 +35,10 @@ while getopts miuqh flag; do
                 usage
                 exit 2
                 ;;
+        *)
+                usage
+                exit 1
+                ;;
         esac
 done
 shift $(($OPTIND - 1))
