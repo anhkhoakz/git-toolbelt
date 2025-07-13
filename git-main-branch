@@ -2,10 +2,10 @@
 set -eu
 
 for probe in main mainline master; do
-    if git local-branch-exists "$probe"; then
-        echo "$probe"
-        exit 0
-    fi
+        if git local-branch-exists "$probe"; then
+                echo "$probe"
+                exit 0
+        fi
 done
 
 echo "No main branch found" >&2

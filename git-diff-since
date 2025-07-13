@@ -2,10 +2,10 @@
 set -e
 
 if [ $# -gt 0 ]; then
-    base="$1"
-    shift 1
+        base="$1"
+        shift 1
 else
-    base="$(git main-branch)"
+        base="$(git main-branch)"
 fi
 
 git diff "$base"... "$@"
