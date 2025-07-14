@@ -14,6 +14,13 @@
 
 Or if your prefer using from source, you can use:
 
+Prerequisites:
+
+- [uutils/careutils](https://github.com/uutils/coreutils)
+- [fzf](https://github.com/junegunn/fzf)
+- [just](https://github.com/casey/just)
+- [fd](https://github.com/sharkdp/fd)
+
 ```zsh
     git clone https://github.com/anhkhoakz/git-toolbelt.git
     cd git-toolbelt
