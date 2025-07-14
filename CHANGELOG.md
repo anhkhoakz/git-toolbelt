@@ -1,5 +1,9 @@
 # Unreleased
 
+# v1.9.4
+
+- Fix: common warnings from `shellcheck` and format using `shfmt`
+
 # v1.9.3
 
 - Fix: use main branch in `git-merged` (instead of hardcoding `master`)
@@ -44,7 +48,8 @@
 
 - New command: `git-diff-since`
 - New command: `git-sync-commit-date`
-- `git-cleanup` will now only remove branches after explicit `-l` (local) or `-r` (remote) flag
+- `git-cleanup` will now only remove branches after explicit `-l` (local)
+or `-r` (remote) flag
 
 # v1.7.1
 

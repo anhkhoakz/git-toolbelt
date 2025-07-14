@@ -1,14 +1,23 @@
-# git-toolbelt
+# Git Toolbelt
 
 <div align="center">
-  <img src="./img/git-toolbelt.png" width="376" height="409" alt="git-toolbelt logo" /><br>
+  <img src="./img/git-toolbelt.png" width="376" height="409"
+  alt="git-toolbelt logo" /><br>
 </div>
 
 ## Installation instructions
 
 ```zsh
-    brew tap nvie/tap
-    brew install nvie/tap/git-toolbelt
+    brew tap anhkhoakz/tap
+    brew install anhkhoakz/tap/git-toolbelt
+```
+
+Or if your prefer using from source, you can use:
+
+```zsh
+    git clone https://github.com/anhkhoakz/git-toolbelt.git
+    cd git-toolbelt
+    just install # just.systems
 ```
 
 If not using Homebrew, you will need to have [GNU coreutils][coreutils]
@@ -84,8 +93,10 @@ Advanced usage:
 
 Returns the name of the current branch, if any.  Why doesn't this come with git?
 
+```bash
     $ git current-branch
     master
+```
 
 Alias to `git rev-parse --abbrev-ref HEAD`.
 
@@ -97,22 +108,28 @@ Since there's no way of reliably telling what the default branch name is for
 a repo, this script will probe for the existence of local branches named either
 `main` or `master`.  The first one found is used.
 
+```bash
     $ git main-branch
     master
+```
 
 ## git sha
 
 Returns the SHA value for the specified object, or the current branch head, if
 nothing is provided.
 
+```bash
     git sha <some-object>
+```
 
 Typical example:
 
-    $ git sha HEAD
-    f688d7543c5d52f5f78b3db1b0dd1616059299a4
-    $ git sha -s HEAD
-    f688d75
+```bash
+$ git sha HEAD
+f688d7543c5d52f5f78b3db1b0dd1616059299a4
+$ git sha -s HEAD
+f688d75
+```
 
 Shows the commit SHA for the latest commit.
 
@@ -123,11 +140,15 @@ not include any detailed file status, and never includes non-existing files.
 
 This makes it ideal for the following use-case:
 
-    vim (git modified)
+```bash
+vim (git modified)
+```
 
 If you want to locally modified files that are already staged, too, use:
 
-    vim (git modified -i)
+```bash
+vim (git modified -i)
+```
 
 ## git modified-since
 
@@ -138,7 +159,9 @@ files.
 
 Opens all files modified on your branch (since you branched off `master`).
 
-    vim (git modified-since)
+```bash
+vim (git modified-since)
+```
 
 ## git separator
 
@@ -166,7 +189,9 @@ the remote branch.  Shorthand for `git push -u origin <current-branch>`.
 
 Accepts options, too, so you can use
 
-    git push-current -f
+```bash
+git push-current -f
+```
 
 to force-push.
 
@@ -199,11 +224,13 @@ Tests if the given local branch, remote branch, or tag exists.
 
 Returns a list of local branches, ordered by recency:
 
-    $ git recent-branches
-    foo
-    master
-    bar
-    qux
+```bash
+$ git recent-branches
+foo
+master
+bar
+qux
+```
 
 ## git remote-tracking-branch
 
@@ -220,8 +247,10 @@ only returns an exit code if such commits exist.
 
 Tests if X is merged into Y:
 
-    git contains X Y  # does X contain Y?
-    git is-ancestor X Y  # is X an ancestor of Y?
+```bash
+git contains X Y  # does X contain Y?
+git is-ancestor X Y  # is X an ancestor of Y?
+```
 
 **CAVEAT:**
 Even though they might look like opposites, `X contains Y` does not mean `not
@@ -264,10 +293,12 @@ remote.  Will be most conservative with deletions.
 Amend all local staged changes into the last commit. Ideal for fixing typo's,
 when you don't want to re-edit the commit message.
 
+```bash
     git commit -m "Something cool."
     vim somefile.txt  # fix typo
     git add somefile.txt
     git fixup  # merge this little change back into the last commit
+```
 
 ## git fixup-with
 
@@ -302,6 +333,19 @@ After running `git shatter-by-file`, you'll typically want to run `git rebase
 original commit message is kept in there (in the empty first commit), so make
 sure to use it.
 
+```bash
+$ git branch
+  master
+* mybranch
+$ git status
+M foo.txt
+M bar.txt
+$ git add foo.txt
+$ git commit-to master -m "Add foo to master."
+$ git add bar.txt
+$ git commit -m "Add bar to mybranch."
+```
+
 ## git cleave
 
 Splits the last commit into 2 or more commits. Takes one or more regex values
@@ -310,7 +354,9 @@ matching each of the regexes.
 
 For example:
 
-    git cleave client/ server/
+```bash
+git cleave client/ server/
+```
 
 Will split the last commit into 2 (or 3) commits. The first one will contain
 all the files containing `client/`, the second will contain all the files
@@ -319,7 +365,9 @@ a 3rd commit will be made with the "remainder".
 
 Another example:
 
-    git cleave '.*\.js$'
+```bash
+git cleave '.*\.js$'
+```
 
 This will split off all Javascript files from a commit.
 
@@ -329,16 +377,18 @@ Ever been on a branch and really wanted to quickly commit a change to
 a different branch?  Given that this is possible without merge conflicts, git
 commit-to will allow you to do so, without checking out the branch necessarily.
 
-    $ git branch
-      master
-    * mybranch
-    $ git status
-    M foo.txt
-    M bar.txt
-    $ git add foo.txt
-    $ git commit-to master -m "Add foo to master."
-    $ git add bar.txt
-    $ git commit -m "Add bar to mybranch."
+```bash
+$ git branch
+  master
+* mybranch
+$ git status
+M foo.txt
+M bar.txt
+$ git add foo.txt
+$ git commit-to master -m "Add foo to master."
+$ git add bar.txt
+$ git commit -m "Add bar to mybranch."
+```
 
 ## git cherry-pick-to
 
@@ -347,15 +397,17 @@ available on other branches as well? You can now cherry-pick this commit to any
 branch, staying on the current branch. (Given the change won't lead to a merge
 conflict.)
 
-    $ git branch
-      master
-    * mybranch
-    $ git add foo.txt
-    $ git commit -m "Really useful thing."
-    $ git cherry-pick-to master HEAD
-    $ git branch  # did not switch branches
-      master
-    * mybranch
+```bash
+$ git branch
+  master
+* mybranch
+$ git add foo.txt
+$ git commit -m "Really useful thing."
+$ git cherry-pick-to master HEAD
+$ git branch  # did not switch branches
+  master
+* mybranch
+```
 
 ## git is-repo
 
@@ -366,30 +418,36 @@ associated to it.  Scriptable equivalent of `git repo`.
 
 `git root` prints the root location of the working tree.
 
-    $ cd /path/to/worktree
-    $ cd some/dir/in/worktree
-    $ pwd
-    /path/to/worktree/some/project/dir
-    $ git root
-    /path/to/worktree
+```bash
+$ cd /path/to/worktree
+$ cd some/dir/in/worktree
+$ pwd
+/path/to/worktree/some/project/dir
+$ git root
+/path/to/worktree
+```
 
 `git repo` prints the location of the Git directory, typically `.git`, but
 could differ based on your setup.  Will return with a non-zero exit code if not
 in a repo.
 
-    $ cd /path/to/my/worktree
-    $ git repo
-    .git
-    $ cd /tmp
-    $ git repo
-    fatal: Not a git repository (or any of the parent directories): .git
+```bash
+$ cd /path/to/my/worktree
+$ git repo
+.git
+$ cd /tmp
+$ git repo
+fatal: Not a git repository (or any of the parent directories): .git
+```
 
 ## git initial-commit
 
 `git initial-commit` prints the initial commit for the repo.
 
-    $ git initial-commit
-    48c94a6a29e9e52ab63ce0fab578101ddc56a04f
+```bash
+$ git initial-commit
+48c94a6a29e9e52ab63ce0fab578101ddc56a04f
+```
 
 ## git has-local-changes / git is-clean / git is-dirty
 
@@ -460,28 +518,32 @@ checkout.
 By using force-checkout you basically give git the finger, and check out
 a branch anyway. **You do agree to lose data when using this command.**
 
-    $ git checkout master
-    error: Your local changes to the following files would be overwritten by checkout:
-        foo/bar.txt
-    Please, commit your changes or stash them before you can switch branches.
-    Aborting
-    $ git force-checkout master
-    Switched to branch 'master'
+```bash
+$ git checkout master
+error: Your local changes to the following files would be overwritten by checkout:
+    foo/bar.txt
+Please, commit your changes or stash them before you can switch branches.
+Aborting
+$ git force-checkout master
+Switched to branch 'master'
+```
 
 ## git conflicts
 
 Generates a summary for all local branches that will merge uncleanly—i.e. will
 lead to merge conflicts later on.
 
-    $ git branch
-      develop
-    * mybranch
-      master
-      other-branch
-    $ git conflicts
-    develop... merges cleanly
-    master...  merges cleanly
-    other-branch... CONFLICTS AHEAD
+```bash
+$ git branch
+develop
+* mybranch
+master
+other-branch
+$ git conflicts
+develop... merges cleanly
+master...  merges cleanly
+other-branch... CONFLICTS AHEAD
+```
 
 ## git-skip / git-unskip / git-show-skipped
 
@@ -498,24 +560,26 @@ in the "advanced" category.)
 
 Basic usage:
 
-    $ git status
-     M foo.txt
-     M bar.txt
-     M qux.txt
-    $ git skip foo.txt
-    $ git status
-     M bar.txt
-     M qux.txt
-    $ git show-skipped
-    foo.txt
-    $ git commit -am 'Commit everything.'
-    $ git status
-    nothing to commit, working directory clean
-    $ git is-clean && echo "clean" || echo "not clean"
-    not clean
-    $ git unskip -a
-    $ git status
-     M foo.txt
+```bash
+$ git status
+ M foo.txt
+ M bar.txt
+ M qux.txt
+$ git skip foo.txt
+$ git status
+ M bar.txt
+ M qux.txt
+$ git show-skipped
+foo.txt
+$ git commit -am 'Commit everything.'
+$ git status
+nothing to commit, working directory clean
+$ git is-clean && echo "clean" || echo "not clean"
+not clean
+$ git unskip -a
+$ git status
+ M foo.txt
+```
 
 As you can see, `git-is-clean` is aware of any lurking "skipped" files, and
 won't report a clean working tree, as these assumed unchanged files often block
